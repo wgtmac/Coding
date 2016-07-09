@@ -36,6 +36,22 @@ public class HouseRobberIII {
     }
 
     public int rob(TreeNode root) {
+        int[] robbed = visit(root);
+        return Math.max(robbed[0], robbed[1]);
+    }
 
+    private static int[] ZERO = {0 , 0};
+
+    // max robbed, int[2]: 0 rob, 1 skip
+    private int[] visit(TreeNode root) {
+        if (root == null) return ZERO;
+
+        int[] left = visit(root.left);
+        int[] right = visit(root.right);
+
+        return new int[] {
+                root.val + left[1] + right[1],
+                Math.max(left[0], left[1]) + Math.max(right[0], right[1])
+        };
     }
 }
