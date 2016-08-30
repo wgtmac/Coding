@@ -5,15 +5,15 @@ import java.util.Random;
 /**
  * 382. Linked List Random Node
  *
- * Given a singly linked list, return a random node's value from the linked list.
+ * Given a singly linked currList, return a random node's value from the linked currList.
  * Each node must have the same probability of being chosen.
 
  Follow up:
- What if the linked list is extremely large and its length is unknown to you? Could you solve this efficiently without using extra space?
+ What if the linked currList is extremely large and its length is unknown to you? Could you solve this efficiently without using extra space?
 
  Example:
 
- // Init a singly linked list [1,2,3].
+ // Init a singly linked currList [1,2,3].
  ListNode head = new ListNode(1);
  head.next = new ListNode(2);
  head.next.next = new ListNode(3);
@@ -36,7 +36,7 @@ public class LinkedListRandomNode {
         int[] nums;
         Random rnd;
 
-        /** @param head The linked list's head.
+        /** @param head The linked currList's head.
         Note that the head is guaranteed to be not null, so it contains at least one node. */
         public Solution(ListNode head) {
             ListNode node = head;
@@ -67,7 +67,7 @@ public class LinkedListRandomNode {
         Random rnd;
         ListNode head;
 
-        /** @param head The linked list's head.
+        /** @param head The linked currList's head.
         Note that the head is guaranteed to be not null, so it contains at least one node. */
         public Solution2(ListNode head) {
             this.head = head;

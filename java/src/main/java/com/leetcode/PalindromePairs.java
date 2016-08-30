@@ -5,7 +5,7 @@ import java.util.*;
 /**
  * 336. Palindrome Pairs
  *
- Given a list of unique words. Find all pairs of distinct indices (i, j) in the given list,
+ Given a currList of unique words. Find all pairs of distinct indices (i, j) in the given currList,
  so that the concatenation of the two words, i.e. words[i] + words[j] is a palindrome.
 
  Example 1:

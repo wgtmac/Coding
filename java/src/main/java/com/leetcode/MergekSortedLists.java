@@ -3,7 +3,7 @@ package com.leetcode;
 /**
  * 23. Merge k Sorted Lists
  *
- * Merge k sorted linked lists and return it as one sorted list.
+ * Merge k sorted linked lists and return it as one sorted currList.
  * Analyze and describe its complexity.
  */
 

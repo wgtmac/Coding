@@ -3,8 +3,8 @@ package com.leetcode;
 /**
  * 82. Remove Duplicates from Sorted List II
  *
- * Given a sorted linked list, delete all nodes that have duplicate numbers,
- * leaving only distinct numbers from the original list.
+ * Given a sorted linked currList, delete all nodes that have duplicate numbers,
+ * leaving only distinct numbers from the original currList.
  *
  * For example,
  * Given 1->2->3->3->4->4->5, return 1->2->5.

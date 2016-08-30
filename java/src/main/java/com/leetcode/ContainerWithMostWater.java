@@ -9,7 +9,7 @@ package com.leetcode;
  * Find two lines, which together with x-axis forms a container, such that the container contains the most water.
  * Note: You may not slant the container.
  * 
- * Skill:
+ * Hint:
  * 两个指针 一左一右
  * 哪边短就先移哪边，因为不然的话，移动长的下一次只会面积减小	，因此把当前小的排除
  * 贪心算法

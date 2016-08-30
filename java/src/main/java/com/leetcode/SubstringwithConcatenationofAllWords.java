@@ -3,7 +3,7 @@ package com.leetcode;
 /**
  * 30. Substring with Concatenation of All Words
  *
- * You are given a string, S, and a list of words, L,
+ * You are given a string, S, and a currList of words, L,
  * that are all of the same length.
  *
  * Find all starting indices of substring(s) in S
