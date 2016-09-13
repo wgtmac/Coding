@@ -7,20 +7,20 @@ import java.util.List;
 /**
  * 341. Flatten Nested List Iterator
  *
- Given a nested currList of integers, implement an iterator to flatten it.
-
- Each element is either an integer, or a currList --
- whose elements may also be integers or other lists.
-
- Example 1:
- Given the currList [[1,1],2,[1,1]],
- By calling next repeatedly until hasNext returns false,
- the order of elements returned by next should be: [1,1,2,1,1].
-
- Example 2:
- Given the currList [1,[4,[6]]],
- By calling next repeatedly until hasNext returns false,
- the order of elements returned by next should be: [1,4,6].
+ * Given a nested currList of integers, implement an iterator to flatten it.
+ *
+ * Each element is either an integer, or a currList --
+ * whose elements may also be integers or other lists.
+ *
+ * Example 1:
+ * Given the currList [[1,1],2,[1,1]],
+ * By calling next repeatedly until hasNext returns false,
+ * the order of elements returned by next should be: [1,1,2,1,1].
+ *
+ * Example 2:
+ * Given the currList [1,[4,[6]]],
+ * By calling next repeatedly until hasNext returns false,
+ * the order of elements returned by next should be: [1,4,6].
  */
 public class FlattenNestedListIterator {
 
@@ -61,9 +61,8 @@ public class FlattenNestedListIterator {
             if (nestedInteger.isInteger()) {
                 this.list.add(nestedInteger.getInteger());
             } else {
-                for (NestedInteger ni : nestedInteger.getList()) {
+                for (NestedInteger ni : nestedInteger.getList())
                     helper(ni);
-                }
             }
         }
 
