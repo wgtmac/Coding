@@ -10,6 +10,11 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * Created by wgtmac on 9/15/16.
+ *
+ * Same lock on different operations.
+ *
+ * [Object]    wait  <-> notify
+ * [Condition] await <-> signal
  */
 public class ConditionTest {
 

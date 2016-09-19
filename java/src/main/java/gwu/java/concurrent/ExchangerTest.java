@@ -6,6 +6,8 @@ import java.util.concurrent.TimeoutException;
 
 /**
  * Created by wgtmac on 9/15/16.
+ *
+ * Exchange messages between threads.
  */
 public class ExchangerTest {
 

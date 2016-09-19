@@ -5,6 +5,8 @@ import java.util.concurrent.TimeUnit;
 
 /**
  * Created by wgtmac on 9/15/16.
+ *
+ * Control and manage concurrent resources.
  */
 public class SemaphoreTest {
 
