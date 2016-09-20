@@ -1,0 +1,32 @@
+{
+ "namespace": "gwu.hadoop.avro.generated",
+ "type": "record",
+ "name": "AvroSchemaExample",
+ "fields": [
+     {"name": "null_field", "type": "null"},
+     {"name": "boolean_field", "type": "boolean"},
+     {"name": "int_field", "type": "int"},
+     {"name": "long_field", "type": "long"},
+     {"name": "float_field", "type": "float"},
+     {"name": "double_field", "type": "double"},
+     {"name": "bytes_field", "type": "bytes"},
+     {"name": "string_field", "type": "string"},
+     {"name": "array_field", "type": {"type": "array", "items": "long"}},
+     {
+        "name": "record_field",
+        "type": {
+            "type": "record",
+            "name": "RecordType",
+            "fields": [
+                {"name": "year", "type": "int"},
+                {"name": "temperature", "type": "int"},
+                {"name": "stationId", "type": "string"}
+            ]
+        }
+     },
+     {"name": "map_field", "type": {"type": "map", "values": "string"}},
+     {"name": "enum_field", "type" : {"type": "enum", "name": "EnumType", "symbols": ["A", "B", "C"]}},
+     {"name": "fixed_number_field", "type": {"name": "FixedType", "type": "fixed", "size": 16}},
+     {"name": "union_field", "type": ["null", "string"]}
+ ]
+}

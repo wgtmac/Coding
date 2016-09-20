@@ -1,0 +1,12 @@
+{
+     "namespace": "gwu.hadoop.avro.generated",
+     "type": "record",
+     "name": "NewStringPair",
+     "doc": "A pair of strings with an added field.",
+     "fields": [
+       {"name": "left", "type": "string"},
+       {"name": "right", "type": "string"},
+       {"name": "description1", "type": "string", "default": ""},
+       {"name": "description2", "type": ["null", "string"], "default": null}
+     ]
+}
