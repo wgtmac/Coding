@@ -24,9 +24,35 @@
             ]
         }
      },
-     {"name": "map_field", "type": {"type": "map", "values": "string"}},
-     {"name": "enum_field", "type" : {"type": "enum", "name": "EnumType", "symbols": ["A", "B", "C"]}},
-     {"name": "fixed_number_field", "type": {"name": "FixedType", "type": "fixed", "size": 16}},
-     {"name": "union_field", "type": ["null", "string"]}
+     {
+        "name": "map_field",
+        "type": {
+             "type": "map",
+             "values": "string"
+        }
+     },
+     {
+        "name": "enum_field",
+        "type" : {
+            "type": "enum",
+            "name": "EnumType",
+            "symbols": ["A", "B", "C"]
+        }
+     },
+     {
+        "name": "fixed_number_field",
+        "type": {
+            "name": "FixedType",
+            "type": "fixed",
+            "size": 16
+        }
+     },
+     {
+        "name": "union_field",
+        "type": [
+           "null",
+           "string"
+        ]
+     }
  ]
 }

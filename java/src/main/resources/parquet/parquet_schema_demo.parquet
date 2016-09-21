@@ -1,0 +1,23 @@
+message ParquetRecordName {
+     required int32  id;
+     optional int64  longId;
+     required int96  veryLongId;
+     optional float  num1;
+     optional double num2;
+     required binary stringValue  (UTF8);
+     required binary enumValue    (ENUM);
+     required int32  decimalValue (DECIMAL(5,2));
+     required int32  dateValue    (DATE);
+     required group  listValue    (LIST) {
+        repeated group list {
+            required int32 element;
+        }
+     };
+     required group  mapValue     (MAP) {
+         repeated group key_value {
+           required binary key (UTF8);
+           optional int32  value;
+         }
+     };
+     optional fixed_len_byte_array(8) fullName;
+}

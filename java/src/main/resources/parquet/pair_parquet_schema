@@ -1,0 +1,4 @@
+message Pair {
+    required binary left  (UTF8);
+    required binary right (UTF8);
+}
