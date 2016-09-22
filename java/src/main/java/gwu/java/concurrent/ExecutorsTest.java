@@ -30,6 +30,7 @@ public class ExecutorsTest {
     }
 
     public static void main(String[] args) throws InterruptedException {
+        // unlimited thread pool
         ExecutorService executorService = Executors.newCachedThreadPool(new ThreadFactory() {
             @Override
             public Thread newThread(Runnable r) {
