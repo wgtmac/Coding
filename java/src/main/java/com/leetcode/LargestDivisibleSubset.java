@@ -5,25 +5,23 @@ import java.util.*;
 /**
  * 368. Largest Divisible Subset
  *
- Given a set of distinct positive integers,
- find the largest subset such that every pair (Si, Sj)
- of elements in this subset satisfies: Si % Sj = 0.
-
- If there are multiple solutions, return any subset is fine.
-
- Example 1:
- nums: [1,2,3]
- Result: [1,2] (of course, [1,3] will also be ok)
-
- Example 2:
- nums: [1,2,4,8]
- Result: [1,2,4,8]
+ * Given a set of distinct positive integers, find the largest subset such that
+ * every pair (Si, Sj) of elements in this subset satisfies: Si % Sj = 0.
+ *
+ * If there are multiple solutions, return any subset is fine.
+ *
+ * Example 1:
+ * nums: [1,2,3]
+ * Result: [1,2] (of course, [1,3] will also be ok)
+ *
+ * Example 2:
+ * nums: [1,2,4,8]
+ * Result: [1,2,4,8]
  */
 public class LargestDivisibleSubset {
 
     private static class Helper implements Comparable<Helper> {
-        private int idx;
-        private int cnt;
+        private int idx, cnt;
         Helper(int i, int c) {
             idx = i;
             cnt = c;
@@ -40,14 +38,14 @@ public class LargestDivisibleSubset {
     }
 
     public List<Integer> largestDivisibleSubset(int[] nums) {
-        TreeSet<Helper> set = new TreeSet<>();
-        // mark its longest predecessor
-        int[] prev = new int[nums.length];
-
         Arrays.sort(nums);
+
+        TreeSet<Helper> set = new TreeSet<>();
+        int[] prev = new int[nums.length]; // mark its longest predecessor
+
         for (int i = 0; i < nums.length; ++i) {
             Helper prevHelper = null;
-            for (Helper helper : set) {
+            for (Helper helper : set) {   // search from the longest subset
                 if ((nums[i] % nums[helper.idx]) == 0) {
                     prevHelper = helper;
                     break;
@@ -67,12 +65,10 @@ public class LargestDivisibleSubset {
         if (!set.isEmpty()) {
             Helper longestHead = set.first();
             Stack<Integer> stk = new Stack<>();
-            for (int i = longestHead.idx; i != -1; i = prev[i]) {
+            for (int i = longestHead.idx; i != -1; i = prev[i])
                 stk.push(nums[i]);
-            }
-            while (!stk.isEmpty()) {
+            while (!stk.isEmpty())
                 maxList.add(stk.pop());
-            }
         }
 
         return maxList;
@@ -97,14 +93,7 @@ public class LargestDivisibleSubset {
         }
 
         if (i != nums.length) {
-            boolean flag = true;
-            for (int num : list) {
-                if (nums[i] % num != 0) {
-                    flag = false;
-                    break;
-                }
-            }
-            if (flag) {
+            if (list.isEmpty() || nums[i] % list.get(list.size() - 1) == 0) {
                 list.add(nums[i]);
                 helper(nums, i + 1, list, maxList);
                 list.remove(list.size() - 1);

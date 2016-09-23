@@ -1,8 +1,6 @@
 package com.leetcode;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Stack;
+import java.util.*;
 
 /**
  * 207. Course Schedule
@@ -62,13 +60,11 @@ public class CourseSchedule {
     private boolean DFS (Graph[] g, int v, Stack<Integer> t) {
         boolean hasUnmarkedEdge = false;
         g[v].marked = true;
-        
-        if (g[v].edges.size() != 0) {
-            for (int e : g[v].edges) {
-                if (!g[e].marked) {
-                    hasUnmarkedEdge = true;
-                    DFS(g, e, t);
-                }
+
+        for (int e : g[v].edges) {
+            if (!g[e].marked) {
+                hasUnmarkedEdge = true;
+                DFS(g, e, t);
             }
         }
         
@@ -84,6 +80,45 @@ public class CourseSchedule {
             vertex = i;
             marked = false;
             edges = new ArrayList<>();
+        }
+    }
+
+    private static class OptimizedSolution {
+        public boolean canFinish(int numCourses, int[][] prerequisites) {
+            // construct graph
+            List<Integer>[] edges = new List[numCourses];
+            for (int i = 0; i < numCourses; ++i)
+                edges[i] = new ArrayList<>();
+            for (int i = 0; i < prerequisites.length; ++i)
+                edges[prerequisites[i][1]].add(prerequisites[i][0]);
+
+            boolean[] visited = new boolean[numCourses];
+            Set<Integer> path = new HashSet<Integer>();
+
+            for (int i = 0; i < numCourses; ++i) {
+                if (!visited[i]) {
+                    if (!DFS(edges, i, visited, path))
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        private boolean DFS(List<Integer>[] edges, int index, boolean[] visited, Set<Integer> path) {
+            visited[index] = true;
+            path.add(index);
+
+            for (int next : edges[index]) {
+                if (path.contains(next))
+                    return false;
+
+                if (!visited[next])
+                    if (!DFS(edges, next, visited, path))
+                        return false;
+            }
+            path.remove(index);
+            return true;
         }
     }
 }
