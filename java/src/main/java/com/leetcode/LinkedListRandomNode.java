@@ -3,7 +3,7 @@ package com.leetcode;
 import java.util.Random;
 
 /**
- * 382. Linked List Random Node
+ * 382. Linked List Random TrieNode
  *
  * Given a singly linked currList, return a random node's value from the linked currList.
  * Each node must have the same probability of being chosen.

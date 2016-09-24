@@ -1,9 +1,9 @@
 package com.leetcode;
 
 /**
- * 117. Populating Next Right Pointers in Each Node II
+ * 117. Populating Next Right Pointers in Each TrieNode II
  * 
- * Follow up for problem "Populating Next Right Pointers in Each Node".
+ * Follow up for problem "Populating Next Right Pointers in Each TrieNode".
  * What if the given tree could be any binary tree? Would your previous solution still work?
  * Note:
  * You may only use constant extra space.

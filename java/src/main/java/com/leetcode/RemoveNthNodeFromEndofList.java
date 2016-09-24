@@ -1,7 +1,7 @@
 package com.leetcode;
 
 /**
- * 19. Remove Nth Node From End of List
+ * 19. Remove Nth TrieNode From End of List
  * 
  * DESCRIPTION:
  * Given a linked currList, remove the nth node from the end of currList and return its head.

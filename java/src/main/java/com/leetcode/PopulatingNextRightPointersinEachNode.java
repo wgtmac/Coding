@@ -1,7 +1,7 @@
 package com.leetcode;
 
 /**
- * 116. Populating Next Right Pointers in Each Node
+ * 116. Populating Next Right Pointers in Each TrieNode
  * 
  * Given a binary tree
  * struct TreeLinkNode {

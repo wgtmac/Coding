@@ -1,8 +1,5 @@
 package gwu.java.concurrent;
 
-import sun.nio.ch.ThreadPool;
-import sun.tools.jconsole.Worker;
-
 import java.util.concurrent.*;
 
 /**
