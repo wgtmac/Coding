@@ -109,6 +109,12 @@ public class TheSkylineProblem {
             resultQueue.offer(todoQueue.poll());
 
         // merge outputs
+        List<int[]> list = mergeResults(resultQueue);
+
+        return list;
+    }
+
+    private List<int[]> mergeResults(Queue<Building> resultQueue) {
         List<int[]> list = new ArrayList<>();
         Building prev = resultQueue.isEmpty() ? null : resultQueue.poll();
 

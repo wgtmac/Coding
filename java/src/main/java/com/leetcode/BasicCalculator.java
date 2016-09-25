@@ -18,58 +18,127 @@ import java.util.Stack;
  * "1 + 1" = 2
  * " 2-1 + 2 " = 3
  * "(1+(4+5+2)-3)+(6+8)" = 23
-*/
+ *
+ * Hint: + and - do not care about order
+ */
 
 public class BasicCalculator {
+
     public int calculate(String s) {
-    	List<String> exp = new ArrayList<String>();
+        List<Integer> numbers = new ArrayList<>();
+        List<Character> operators = new ArrayList<>();
+
+        int num = -1;
+        for (int i = 0; i < s.length(); ++i) {
+            char ch = s.charAt(i);
+            if (Character.isDigit(ch)) {
+                num = num == -1 ? (ch - '0') : (num * 10 + ch - '0');
+            } else {
+                if (num != -1) {
+                    numbers.add(num);
+                    num = -1;
+                }
+
+                if (ch == '+' || ch == '-') {
+                    operators.add(ch);
+                } else if (!Character.isSpaceChar(ch)) {   // ch == '('
+                    int start = ++i;
+                    for (int lParenCnt = 1, rParenCnt = 0; lParenCnt != rParenCnt; ++i) {
+                        if (s.charAt(i) == '(')
+                            lParenCnt++;
+                        else if (s.charAt(i) == ')')
+                            rParenCnt++;
+                    }
+                    numbers.add(calculate(s.substring(start, --i)));
+                }
+            }
+        }
+
+        // very easy to ignore this
+        if (num != -1) numbers.add(num);
+
+        int result = 0;
+        if (!numbers.isEmpty()) {
+            result = numbers.get(0);
+            for (int i = 1; i < numbers.size(); ++i) {
+                result = eval(result, numbers.get(i), operators.get(i - 1));
+            }
+        }
+        return result;
+    }
+
+    private int eval (int a, int b, char op) {
+        switch(op) {
+            case '+': return a + b;
+            case '-': return a - b;
+            default: return 0;
+        }
+    }
+
+    public static void main(String[] args) {
+        BasicCalculator s = new BasicCalculator();
+        System.out.println(s.calculate("1") == s.calculate_using_stack("1"));
+        System.out.println(s.calculate("1+1") == s.calculate_using_stack("1+1"));
+        System.out.println(s.calculate("1+1+1") == s.calculate_using_stack("1+1+1"));
+        System.out.println(s.calculate("1+(1+1)") == s.calculate_using_stack("1+(1+1)"));
+        System.out.println(s.calculate("1+(1-1)") == s.calculate_using_stack("1+(1-1)"));
+        System.out.println(s.calculate("  1+(1 -(1 - 1))") == s.calculate_using_stack("  1+(1 -(1 - 1))"));
+    }
+
+    /**
+     * Use stack to hold numbers & operators to be processed
+     * When meeting a operator +/-, all previous expressions should evaluate;
+     * When meeting a ), evaluate all expressions belong to a parenthesis pair.
+     */
+    public int calculate_using_stack(String s) {
+    	List<String> symbolList = new ArrayList<>();
     	s += " ";
-        char[] str = s.toCharArray();
-        String num = "";
-        for (int i = 0; i < str.length; ++i) {
-        	if (Character.isDigit(str[i]))
-        		num += str[i];
+        StringBuilder num = new StringBuilder();
+        for (int i = 0; i < s.length(); ++i) {
+            char ch = s.charAt(i);
+        	if (Character.isDigit(ch))
+        		num.append(ch);
         	else {
         		if (num.length() > 0) {
-        			exp.add(new String(num));
-        			num = "";
+        			symbolList.add(num.toString());
+                    num.delete(0, num.length());
         		}
-        		if (str[i] != ' ') 
-        			exp.add("" + str[i]);
+        		if (!Character.isSpaceChar(ch))
+        			symbolList.add(Character.toString(ch));
 			}
         }
 
-        Stack<String> S = new Stack<>();
-        Stack<Integer> rpn = new Stack<>();
-        for (String ss : exp) {
-        	if (Character.isDigit(ss.charAt(0))) 
-        		rpn.push(Integer.parseInt(ss));
-        	else if (ss.equals("("))
-        		S.push(ss);
-        	else if (ss.equals(")")){
-        		while (!S.peek().equals("(")) {
-        			rpn.push(calculate(rpn.pop(), rpn.pop(), S.pop()));
+        Stack<String> operatorStack = new Stack<>();
+        Stack<Integer> numberStack = new Stack<>();
+        for (String symbol : symbolList) {
+        	if (Character.isDigit(symbol.charAt(0)))
+        		numberStack.push(Integer.parseInt(symbol));
+        	else if (symbol.equals("("))
+        		operatorStack.push(symbol);
+        	else if (symbol.equals(")")){
+        	    // calculate nearest () pair to a single number
+        		while (!operatorStack.peek().equals("(")) {
+        			numberStack.push(calculate(numberStack.pop(), numberStack.pop(), operatorStack.pop()));
         		}
-        		S.pop();
-        	}
-        	else {
-        		while (!S.empty() && !S.peek().equals("(")) {
-        			rpn.push(calculate(rpn.pop(), rpn.pop(), S.pop()));
+        		operatorStack.pop(); // remove '('
+        	} else {
+        	    // when there is a '+/-', expressions on the left should evaluate
+                // to a single number
+        		while (!operatorStack.empty() && !operatorStack.peek().equals("(")) {
+        			numberStack.push(calculate(numberStack.pop(), numberStack.pop(), operatorStack.pop()));
         		}
-        		S.push(ss);
+        		operatorStack.push(symbol);
         	}
         }
-        while (!S.empty())
-        	rpn.push(calculate(rpn.pop(), rpn.pop(), S.pop()));
-        return rpn.empty() ? 0 : rpn.peek();
+        while (!operatorStack.empty())
+        	numberStack.push(calculate(numberStack.pop(), numberStack.pop(), operatorStack.pop()));
+        return numberStack.empty() ? 0 : numberStack.peek();
     }
 
     private int calculate (int b, int a, String op) {
     	switch(op) {
         	case "+": return a + b;
         	case "-": return a - b;
-     		case "*": return a * b;
-			case "/": return a / b;
 			default: return 0;
     	}
 	}
