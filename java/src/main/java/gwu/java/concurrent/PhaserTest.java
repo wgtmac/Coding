@@ -8,6 +8,9 @@ import java.util.concurrent.TimeoutException;
  * Created by wgtmac on 9/18/16.
  *
  * Control the permits of each phase.
+ *
+ * Phaser: arriveAndAwaitAdvance(), arriveAndDeregister(), arrive()
+ *         awaitAdvance(x), onAdvance(x, y), register(), bulkRegister(x)
  */
 public class PhaserTest {
 

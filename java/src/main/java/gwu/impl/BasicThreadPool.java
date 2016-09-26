@@ -9,62 +9,6 @@ import java.util.Queue;
  * A basic unlimited thread pool
  */
 
-class BasicThread extends Thread {
-    private BasicThreadPool pool;
-    private Runnable runnable;
-    private boolean isShutdown = false;
-    private boolean isIdle = false;
-
-    public BasicThread(Runnable runnable, String name, BasicThreadPool pool) {
-        super(name);
-        this.runnable = runnable;
-        this.pool = pool;
-    }
-
-    public void run() {
-        while (!isShutdown) {
-            isIdle = false;
-            if (runnable != null)
-                runnable.run();
-
-            // task is over
-            isIdle = true;
-            try {
-                pool.recycle(this);
-                synchronized (this) {
-                    // wait for this thread itself be notified
-                    this.wait();
-                }
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-            isIdle = false;
-        }
-    }
-
-    public synchronized void shutdown() {
-        isShutdown = true;
-        notifyAll();   // give up the wait and exit
-    }
-
-    public synchronized void setRunnable(Runnable runnable) {
-        this.runnable = runnable;
-        notifyAll();   // give up the wait and continue next task
-    }
-
-    public Runnable getRunnable() {
-        return runnable;
-    }
-
-    public boolean isShutdown() {
-        return isShutdown;
-    }
-
-    public boolean isIdle() {
-        return isIdle;
-    }
-}
-
 public class BasicThreadPool {
 
     private static BasicThreadPool instance = null;
@@ -109,6 +53,62 @@ public class BasicThreadPool {
         } else {
             BasicThread thread = idleThreads.poll();
             thread.setRunnable(runnable);
+        }
+    }
+
+    private static class BasicThread extends Thread {
+        private BasicThreadPool pool;
+        private Runnable runnable;
+        private boolean isShutdown = false;
+        private boolean isIdle = false;
+
+        public BasicThread(Runnable runnable, String name, BasicThreadPool pool) {
+            super(name);
+            this.runnable = runnable;
+            this.pool = pool;
+        }
+
+        public void run() {
+            while (!isShutdown) {
+                isIdle = false;
+                if (runnable != null)
+                    runnable.run();
+
+                // task is over
+                isIdle = true;
+                try {
+                    pool.recycle(this);
+                    synchronized (this) {
+                        // wait for this thread itself be notified
+                        this.wait();
+                    }
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                }
+                isIdle = false;
+            }
+        }
+
+        public synchronized void shutdown() {
+            isShutdown = true;
+            notifyAll();   // give up the wait and exit
+        }
+
+        public synchronized void setRunnable(Runnable runnable) {
+            this.runnable = runnable;
+            notifyAll();   // give up the wait and continue next task
+        }
+
+        public Runnable getRunnable() {
+            return runnable;
+        }
+
+        public boolean isShutdown() {
+            return isShutdown;
+        }
+
+        public boolean isIdle() {
+            return isIdle;
         }
     }
 

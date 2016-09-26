@@ -30,11 +30,15 @@ public class CompletionServiceTest {
         for (int i = 0; i < 3; ++i)
             service.submit(worker);
 
-        System.out.println(service.poll());  // non-blocking
+        // non-blocking call poll()
+        Future<String> future = service.poll();
+        System.out.println("Try to see if any finished: " + future == null);
 
+        // blocking call take(), pick up the fastest finished one
         for (int i = 0; i < 2; ++i)
             System.out.println(service.take().get());
 
+        // no timeout exception sent
         System.out.println(service.poll(5L, TimeUnit.SECONDS).get());
     }
 }

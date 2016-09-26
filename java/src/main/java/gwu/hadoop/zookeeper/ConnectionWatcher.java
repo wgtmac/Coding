@@ -33,5 +33,9 @@ public class ConnectionWatcher implements Watcher {
     public void close() throws InterruptedException {
         zk.close();
     }
+
+    protected ZooKeeper.States getState() {
+        return zk.getState();
+    }
 }
 

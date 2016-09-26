@@ -7,6 +7,8 @@ import java.util.concurrent.TimeUnit;
  * Created by wgtmac on 9/15/16.
  *
  * Control and manage concurrent resources.
+ *
+ * Semaphore: acquire(x), release(x), tryAcquire(x)
  */
 public class SemaphoreTest {
 

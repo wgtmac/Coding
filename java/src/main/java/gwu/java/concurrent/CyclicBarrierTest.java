@@ -8,6 +8,8 @@ import java.util.concurrent.CyclicBarrier;
  * Created by wgtmac on 9/18/16.
  *
  * Same sort of threads waiting for each other.
+ *
+ * CyclicBarrier: await()
  */
 public class CyclicBarrierTest {
 

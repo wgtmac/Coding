@@ -1,5 +1,6 @@
-package gwu.hadoop.zookeeper;
+package gwu.hadoop.zookeeper.group;
 
+import gwu.hadoop.zookeeper.ConnectionWatcher;
 import org.apache.zookeeper.CreateMode;
 import org.apache.zookeeper.KeeperException;
 import org.apache.zookeeper.ZooDefs;

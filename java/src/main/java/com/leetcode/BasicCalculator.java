@@ -83,11 +83,12 @@ public class BasicCalculator {
         System.out.println(s.calculate("1+(1+1)") == s.calculate_using_stack("1+(1+1)"));
         System.out.println(s.calculate("1+(1-1)") == s.calculate_using_stack("1+(1-1)"));
         System.out.println(s.calculate("  1+(1 -(1 - 1))") == s.calculate_using_stack("  1+(1 -(1 - 1))"));
+        System.out.println(s.calculate(" 2-1 + 2 ") == s.calculate_using_stack(" 2-1 + 2 "));
     }
 
     /**
      * Use stack to hold numbers & operators to be processed
-     * When meeting a operator +/-, all previous expressions should evaluate;
+     * When meeting a operator +/-, no need to evaluate because there are only +/-
      * When meeting a ), evaluate all expressions belong to a parenthesis pair.
      */
     public int calculate_using_stack(String s) {
@@ -117,25 +118,24 @@ public class BasicCalculator {
         		operatorStack.push(symbol);
         	else if (symbol.equals(")")){
         	    // calculate nearest () pair to a single number
-        		while (!operatorStack.peek().equals("(")) {
-        			numberStack.push(calculate(numberStack.pop(), numberStack.pop(), operatorStack.pop()));
-        		}
-        		operatorStack.pop(); // remove '('
-        	} else {
-        	    // when there is a '+/-', expressions on the left should evaluate
-                // to a single number
-        		while (!operatorStack.empty() && !operatorStack.peek().equals("(")) {
-        			numberStack.push(calculate(numberStack.pop(), numberStack.pop(), operatorStack.pop()));
-        		}
+                int result = 0;
+                String str;
+        		while (!(str = operatorStack.pop()).equals("("))
+        			result = calculate(result, numberStack.pop(), str);
+                numberStack.push(result + numberStack.pop());
+        	} else  // only + or -
         		operatorStack.push(symbol);
-        	}
         }
+
+        int result = 0;
         while (!operatorStack.empty())
-        	numberStack.push(calculate(numberStack.pop(), numberStack.pop(), operatorStack.pop()));
-        return numberStack.empty() ? 0 : numberStack.peek();
+            result = calculate(result, numberStack.pop(), operatorStack.pop());
+        if (!numberStack.isEmpty())
+            result += numberStack.pop();
+        return result;
     }
 
-    private int calculate (int b, int a, String op) {
+    private int calculate (int a, int b, String op) {
     	switch(op) {
         	case "+": return a + b;
         	case "-": return a - b;
