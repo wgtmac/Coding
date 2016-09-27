@@ -10,6 +10,7 @@
         <parquet.version>1.7.0</parquet.version>
         <hadoop.version>2.7.3</hadoop.version>
         <zookeeper.version>3.4.6</zookeeper.version>
+        <curator.version>3.2.0</curator.version>
     </properties>
 
     <dependencies>
@@ -41,11 +42,33 @@
             <version>${hadoop.version}</version>
         </dependency>
 
+        <!--zookeeper dependencies-->
         <dependency>
             <groupId>org.apache.zookeeper</groupId>
             <artifactId>zookeeper</artifactId>
             <version>${zookeeper.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-recipes</artifactId>
+            <version>${curator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-examples</artifactId>
+            <version>${curator.version}</version>
+        </dependency>
+
+        <dependency>
+            <groupId>org.apache.curator</groupId>
+            <artifactId>curator-framework</artifactId>
+            <version>${curator.version}</version>
+        </dependency>
+
+
+
 
         <!-- Unit test artifacts -->
         <dependency>
