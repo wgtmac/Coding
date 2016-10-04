@@ -3,35 +3,34 @@ package com.leetcode;
 /**
  * 367. Valid Perfect Square
  *
- Given a positive integer num, write a function
- which returns True if num is a perfect square else False.
-
- Note: Do not use any built-in library function such as sqrt.
-
- Example 1:
- Input: 16
- Returns: True
-
- Example 2:
- Input: 14
- Returns: False
+ * Given a positive integer num, write a function which returns True if num is a
+ * perfect square else False.
+ *
+ * Note: Do not use any built-in library function such as sqrt.
+ *
+ * Example 1:
+ * Input: 16
+ * Returns: True
+ *
+ * Example 2:
+ * Input: 14
+ * Returns: False
  */
 public class ValidPerfectSquare {
     public boolean isPerfectSquare(int num) {
-        if (num <= 0 || num > 2147395600) return false;
-        int start = 1, end = 46340;
-        int mid = start + (end - start) / 2;
-        while (start <= end) {
+        if (num < 0) return false;
+        if (num <= 1) return true;
+
+        long start = 1, end = num / 2 + 1;
+        long mid, midSquare;
+        while (start + 1 < end) {
             mid = start + (end - start) / 2;
-            int midSquare = mid * mid;
-            if (midSquare == num) {
-                break;
-            } else if (num < midSquare) {
-                end = mid - 1;
-            } else {
-                start = mid + 1;
-            }
+            midSquare = mid * mid;
+            if (midSquare == num) return true;
+            if (midSquare < num) start = mid;
+            else end = mid;
         }
+        mid = start + (end - start) / 2;
         return mid * mid == num;
     }
 

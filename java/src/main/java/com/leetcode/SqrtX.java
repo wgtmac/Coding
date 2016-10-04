@@ -10,27 +10,24 @@ package com.leetcode;
  * 二分法去做，注意溢出需要long来暂存
  */
 
-
 public class SqrtX {
     public static int sqrt(int x) {
-    	if (x < 1) return 0;
+		if (x < 1) return 0;
 
-        // x/2 + 1 > sqrt(x) if x >= 1
-    	int start = 1, end = (x / 2) + 1, mid = 1;
-    	long p1, p2;
-    	while (start < end) {
-    		mid = start + (end - start) / 2;
-    		p1 = (long)mid * mid;
-    		p2 =  (long)(mid + 1) * (mid + 1);
-    		if (p1 <= x && x < p2)
-    			return mid;
-    		else if (p2 <= x)
-    			start = mid;
-    		else
-    			end = mid;
-    	}
-    	
-    	return mid;
+		// x/2 + 1 > sqrt(x) if x >= 1
+		int start = 1, end = (x / 2) + 1, mid;
+		while (start + 1 < end) {
+			mid = start + (end - start) / 2;
+			long square = (long)mid * mid;
+			if (square == x)
+				return mid;
+			else if (square < x)
+				start = mid;
+			else
+				end = mid;
+		}
+
+		return start + (end - start) / 2;
     }
 
   /*

@@ -20,77 +20,61 @@ import java.util.*;
  * The palindromes are ["dcbaabcd", "abcddcba", "slls", "llssssll"]
  */
 public class PalindromePairs {
-
     private static class TrieNode {
         private int index = -1;
         private Map<Character, TrieNode> children = new HashMap<>(); // 'a' ~ 'z'
     }
 
     // construct trie
-    private TrieNode init(String[] words) {
+    private TrieNode construct(String[] words) {
         TrieNode root = new TrieNode();
-        for (int i = 0; i < words.length; ++i)
-            add(root, words[i], 0, i);
+        for (int i = 0; i < words.length; ++i) {
+            TrieNode node = root;
+            for (int j = 0; j < words[i].length(); ++j) {
+                char ch = words[i].charAt(j);
+                if (!node.children.containsKey(ch))
+                    node.children.put(ch, new TrieNode());
+                node = node.children.get(ch);
+            }
+            node.index = i;
+        }
         return root;
     }
 
-    // construct trie recursively
-    private void add(TrieNode root, String word, int i, int index) {
-        if (word.equals("")) {   // edge case: an empty string exists
-            root.index = index;
-        } else {
-            TrieNode currNode = root.children.get(word.charAt(i));
-            if (currNode == null) {
-                currNode = new TrieNode();
-                root.children.put(word.charAt(i), currNode);
-            }
-
-            if (i == word.length() - 1)  // reach end of a string
-                currNode.index = index;
-            else
-                add(currNode, word, i + 1, index);
+    /**
+     * match the reverse word with the trie
+     */
+    private void trie2WordMatching(TrieNode root, String word, int wordIndex, List<List<Integer>> list) {
+        TrieNode node = root;
+        for (int i = word.length() - 1; i >= 0 && node != null; --i) {
+            if (isPalindrome(word, 0, i))
+                check(node, wordIndex, list);
+            node = node.children.get(word.charAt(i));
         }
+        check(node, wordIndex, list);
+
+        // trie still can go down
+        if (node != null)
+            trailingTrieMatching(node, "", wordIndex, list);
     }
 
-    private void match(TrieNode node, String word, int rightIndex, List<List<Integer>> list) {
-        // "" on the left
-        checkAndAdd(node, rightIndex, word, word.length() - 1, list);
-
-        boolean stillMatching = true;
-        int i = word.length() - 1;
-        while (i >= 0 && stillMatching) {
-            char ch = word.charAt(i);
-            TrieNode nextNode = node.children.get(ch);
-            if (nextNode != null) {
-                checkAndAdd(nextNode, rightIndex, word, i - 1, list);
-                node = nextNode;
-                --i;
-            } else {
-                stillMatching = false;
-            }
-        }
-
-        if (stillMatching) {
-            matchMiddle(node, new StringBuilder(), rightIndex, list);
-        }
-    }
-
-    private void matchMiddle(TrieNode node, StringBuilder sb, int rightIndex, List<List<Integer>> list) {
+    private void trailingTrieMatching(TrieNode root, String str, int wordIndex, List<List<Integer>> list) {
         for (char ch = 'a'; ch <= 'z'; ++ch) {
-            TrieNode next = node.children.get(ch);
-            if (next != null) {
-                sb.append(ch);
-                // can only do it here, to avoid duplicate matching
-                checkAndAdd(next, rightIndex, sb.toString(), sb.length() - 1, list);
-                matchMiddle(next, sb, rightIndex, list);
-                sb.deleteCharAt(sb.length() - 1);
+            TrieNode node = root.children.get(ch);
+            if (node != null) {
+                String nextStr = str + ch;
+                if (isPalindrome(nextStr, 0, nextStr.length() - 1))
+                    check(node, wordIndex, list);
+
+                trailingTrieMatching(node, nextStr, wordIndex, list);
             }
         }
     }
 
-    private void checkAndAdd(TrieNode node, int rightIndex, String str, int strLen, List<List<Integer>> list) {
-        if (node.index != -1 && node.index != rightIndex && isPalindrome(str, 0, strLen)) {
-            list.add(new ArrayList<Integer>() {{ add(node.index); add(rightIndex); }});
+    private void check(TrieNode node, int wordIndex, List<List<Integer>> list) {
+        if (node != null && node.index != -1 && node.index != wordIndex) {
+            int index = node.index;
+            list.add(new ArrayList<Integer>(){{add(index); add(wordIndex);}});
         }
     }
 
@@ -103,10 +87,9 @@ public class PalindromePairs {
 
     public List<List<Integer>> palindromePairs(String[] words) {
         List<List<Integer>> list = new ArrayList<>();
-        TrieNode root = init(words);
-        for (int i = 0; i < words.length; ++i) {
-            match(root, words[i], i, list);
-        }
+        TrieNode root = construct(words);
+        for (int i = 0; i < words.length; ++i)
+            trie2WordMatching(root, words[i], i, list);
         return list;
     }
 
