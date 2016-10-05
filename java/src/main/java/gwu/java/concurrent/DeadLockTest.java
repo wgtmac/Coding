@@ -4,7 +4,7 @@ import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
 /**
- * Created by wgtmac on 9/26/16.
+ * Deadlock: 2 or more threads are waiting for others' locks with blocking others.
  */
 public class DeadLockTest {
     private static class Communicator {
