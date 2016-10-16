@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Queue;
 
 /**
- * Topological sort by indegree and outdegree
+ * Topological sort by indegree
  */
 public class KahnTopologicalSort {
     private static class Graph {
@@ -30,20 +30,18 @@ public class KahnTopologicalSort {
         List<Integer> list = new ArrayList<>();
 
         // init in-degree and out-degree
-        int[] indegree = new int[graph.numOfVertices];
-        //int[] outdegree = new int[graph.numOfVertices];
+        int[] inDegree = new int[graph.numOfVertices];
 
         for (int i = 0; i < graph.numOfVertices; ++i) {
             for (int j : graph.adjacencyList[i]) {
-                indegree[j]++;
-                //outdegree[i]++;
+                inDegree[j]++;
             }
         }
 
         // put all 0 indegree node into queue since there are starting points
         Queue<Integer> queue = new LinkedList<>();
         for (int i = 0; i < graph.numOfVertices; ++i) {
-            if (indegree[i] == 0)
+            if (inDegree[i] == 0)
                 queue.offer(i);
         }
 
@@ -52,14 +50,16 @@ public class KahnTopologicalSort {
         while (!queue.isEmpty()) {
             vertex = queue.poll();
             list.add(vertex);
-            visited++;
 
             for (int adj : graph.adjacencyList[vertex]) {
-                if (--indegree[adj] == 0)
+                if (--inDegree[adj] == 0)
                     queue.offer(adj);
             }
+
+            visited++;
         }
 
+        // a cyclic graph has at least ONE non-zero indegree vertex
         if (visited != graph.numOfVertices) {
             throw new RuntimeException("Cycle is existing!");
         }

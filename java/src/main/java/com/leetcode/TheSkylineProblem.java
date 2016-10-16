@@ -40,124 +40,96 @@ import java.util.*;
  * the three lines of height 5 should be merged into one in the final output as
  * such: [...[2 3], [4 5], [12 7], ...]
  */
+
 public class TheSkylineProblem {
     public List<int[]> getSkyline(int[][] buildings) {
-        Deque<Building> todoQueue = new LinkedList<>(), processedQueue = new LinkedList<>();
-        Queue<Building> resultQueue = new LinkedList<>();
+        // store all blocks that will not overlap with subsequent buildings
+        List<int[]> resultList = new ArrayList<> ();
 
-        for (int i = 0; i < buildings.length; ++i) {
-            Building curr = new Building(buildings[i]);
+        // store all blocks that before current which may overlap with current
+        // elements inside may be further split;
+        // NOTE: all blocks inside are back to back w/o gap
+        Queue<int[]> queue = new LinkedList<> ();
 
-            // dequeue all buildings that do not intersect with current one
-            while (!todoQueue.isEmpty() && todoQueue.peek().right <= curr.left)
-                resultQueue.offer(todoQueue.poll());
-
-            // break curr building to merge with prev buildings
-            while (!todoQueue.isEmpty()) {
-                Building prev = todoQueue.poll();
+        for (int[] curr : buildings) {
+            /**
+             * all blocks on the left of curr[0] should be put into list
+             */
+            Queue<int[]> tmpQueue = new LinkedList<> ();
+            while (!queue.isEmpty()) {
+                int[] prev = queue.poll();
 
                 if (curr == null) {
-                    processedQueue.offer(prev);
-                } else if (prev.right >= curr.right) {
+                    // current building is processed
+                    tmpQueue.offer(prev);
+                } else if (prev[1] <= curr[0]) {
+                    // prev is totally on the left of curr w/o overlapping
+                    // there won't be any case that curr is on the left of prev
+                    // since all blocks in queue are back to back
+                    resultList.add(prev);
+                } else if (curr[1] <= prev[1]) {
                     /**
-                     * Prev building fully contains curr building
-                     * so prev building needs to be divided into 3 parts:
-                     * PREV=(PREV1, CURR+PREV2, PREV3)
+                     * 1. curr block is inside prev block, so [prev.left, curr.left]
+                     * can be thrown into list, it won't overlap
+                     * 2. partition prev into 3 parts
                      */
-                    if (curr.height > prev.height) {
-                        if (prev.left != curr.left)
-                            processedQueue.offer(new Building(prev.left, curr.left, prev.height));
-                        if (prev.right != curr.right) {
-                            prev.left = curr.right;
-                            todoQueue.offerFirst(prev);
-                        }
-                        todoQueue.offerFirst(curr);
-                    } else  // fully covered, put it back
-                        todoQueue.offerFirst(prev);
-                    curr = null;
+                    // left part is non-zero
+                    if (prev[0] != curr[0])
+                        resultList.add(new int[] {prev[0], curr[0], prev[2]});
+
+                    // compare the height of middle part: overlapping with curr
+                    if (prev[2] < curr[2]) {
+                        tmpQueue.offer(curr);
+                        prev[0] = curr[1];
+                    } else
+                        prev[0] = curr[0];
+
+                    // right part is non-zero
+                    if (prev[0] != prev[1])
+                        tmpQueue.offer(prev);
+
+                    curr = null;  // curr is fully covered, no need to process it
                 } else {
                     /**
-                     * Prev building only overlaps with curr building
-                     * PREV=(PREV1, PREV2+CURR1), CURR2
+                     * prev and curr overlaps but curr has a tail
+                     * partition prev and curr into 2 parts
                      */
-                    int boundary = prev.right;
-                    if (prev.height < curr.height) {
-                        if (prev.left != curr.left)
-                            processedQueue.offer(new Building(prev.left, curr.left, prev.height));
-                        prev.left = curr.left;
-                        prev.height = curr.height;
-                        processedQueue.offer(prev);
-                    } else
-                        processedQueue.offer(prev);
+                    // left prev is non-zero
+                    if (prev[0] != curr[0])
+                        resultList.add(new int[] {prev[0], curr[0], prev[2]});
 
-                    // break curr for further comparision
-                    curr.left = boundary;
+                    // mid part updates height: overlapping of prev and curr
+                    prev[0] = curr[0];
+                    prev[2] = Math.max(prev[2], curr[2]);
+                    tmpQueue.offer(prev);
+
+                    // right part is the remaining part of curr block
+                    curr[0] = prev[1];
                 }
             }
 
-            // Easy to be ignored, last building in the list
-            if (curr != null) processedQueue.offer(curr);
-
-            // switch queues
-            Deque<Building> tmp = processedQueue;
-            processedQueue = todoQueue;
-            todoQueue = tmp;
+            if (curr != null) tmpQueue.offer(curr);
+            queue = tmpQueue;
         }
 
-        // Easy to be ignored, un-compared buildings
-        while (!todoQueue.isEmpty())
-            resultQueue.offer(todoQueue.poll());
+        resultList.addAll(queue);
 
-        // merge outputs
-        List<int[]> list = mergeResults(resultQueue);
-
-        return list;
-    }
-
-    private List<int[]> mergeResults(Queue<Building> resultQueue) {
-        List<int[]> list = new ArrayList<>();
-        Building prev = resultQueue.isEmpty() ? null : resultQueue.poll();
-
-        while (!resultQueue.isEmpty()) {
-            Building curr = resultQueue.poll();
-            if (prev != null && prev.height == curr.height) {
-                if (prev.right != curr.left)
-                    addNewBuilding(prev, list);
-                curr.left = prev.left;
-            } else if (prev != null) {
-                if (prev.right == curr.left)
-                    list.add(new int[] {prev.left, prev.height});
-                else
-                    addNewBuilding(prev, list);
+        // merge
+        List<int[]> result = new ArrayList<> ();
+        int[] prev = null;
+        for (int[] curr : resultList) {
+            if (prev == null) {                // first building
+                result.add(new int[]{curr[0], curr[2]});
+            } else if (prev[1] != curr[0]) {   // not continuous
+                result.add(new int[]{prev[1], 0});
+                result.add(new int[]{curr[0], curr[2]});
+            } else if (prev[2] != curr[2]) {   // diff height
+                result.add(new int[]{curr[0], curr[2]});
             }
             prev = curr;
         }
-
-        // Easy to be ignored, last building in the list
-        if (prev != null)
-            addNewBuilding(prev, list);
-
-        return list;
-    }
-
-    private void addNewBuilding(Building building, List<int[]> list) {
-        list.add(new int[] {building.left, building.height});
-        list.add(new int[] {building.right, 0});
-    }
-
-    private static class Building {
-        int left, right, height;
-
-        public Building(int[] building) {
-            left = building[0];
-            right = building[1];
-            height = building[2];
-        }
-
-        public Building(int l, int r, int h) {
-            left = l;
-            right = r;
-            height = h;
-        }
+        if (prev != null)                      // last building
+            result.add(new int[]{prev[1], 0});
+        return result;
     }
 }

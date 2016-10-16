@@ -33,7 +33,7 @@ public class ThreadPoolTest {
         @Override
         public Thread newThread(Runnable r) {
             Thread thread = new Thread(r);
-            thread.setName("Worker-" + Math.random());
+            thread.setName("Worker-" + ThreadLocalRandom.current().nextDouble());
             thread.setUncaughtExceptionHandler(new Thread.UncaughtExceptionHandler() {
                 @Override
                 public void uncaughtException(Thread t, Throwable e) {

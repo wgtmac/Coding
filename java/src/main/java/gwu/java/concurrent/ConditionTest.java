@@ -2,7 +2,6 @@ package gwu.java.concurrent;
 
 import java.util.LinkedList;
 import java.util.Queue;
-import java.util.Random;
 import java.util.concurrent.Semaphore;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.Lock;
@@ -18,14 +17,14 @@ import java.util.concurrent.locks.ReentrantLock;
  */
 public class ConditionTest {
 
-    private static class Buffer<T> {
+    private static class BlockingQueue<T> {
         private Queue<T> queue;
         private int capacity;
         private Lock lock;
         private Condition isEmpty, isFull;
         private Semaphore producerSemaphore, consumerSemaphore;
 
-        public Buffer() {
+        public BlockingQueue() {
             this.capacity = 2;
             this.queue = new LinkedList<T>();
             this.lock = new ReentrantLock();
@@ -60,10 +59,10 @@ public class ConditionTest {
     }
 
     private static class Producer extends Thread {
-        private Buffer<Integer> buffer;
+        private BlockingQueue<Integer> blockingQueue;
 
-        public Producer(Buffer<Integer> buffer) {
-            this.buffer = buffer;
+        public Producer(BlockingQueue<Integer> blockingQueue) {
+            this.blockingQueue = blockingQueue;
         }
 
         @Override
@@ -71,7 +70,7 @@ public class ConditionTest {
             try {
                 int num = (int)Thread.currentThread().getId();
                 Thread.sleep(100 * num);
-                buffer.produce(num);
+                blockingQueue.produce(num);
                 System.out.println(Thread.currentThread().getName() + " produced " + num);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -80,16 +79,16 @@ public class ConditionTest {
     }
 
     private static class Consumer extends Thread {
-        private Buffer<Integer> buffer;
+        private BlockingQueue<Integer> blockingQueue;
 
-        public Consumer(Buffer<Integer> buffer) {
-            this.buffer = buffer;
+        public Consumer(BlockingQueue<Integer> blockingQueue) {
+            this.blockingQueue = blockingQueue;
         }
 
         @Override
         public void run() {
             try {
-                int num = buffer.consume();
+                int num = blockingQueue.consume();
                 System.out.println(Thread.currentThread().getName() + " consumed " + num);
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -98,11 +97,11 @@ public class ConditionTest {
     }
 
     public static void main(String[] args) throws InterruptedException {
-        Buffer<Integer> buffer = new Buffer<>();
+        BlockingQueue<Integer> blockingQueue = new BlockingQueue<>();
 
         Consumer[] consumers = new Consumer[4];
         for (Consumer consumer : consumers) {
-            consumer = new Consumer(buffer);
+            consumer = new Consumer(blockingQueue);
             consumer.start();
         }
 
@@ -110,7 +109,7 @@ public class ConditionTest {
 
         Producer[] producers = new Producer[4];
         for (Producer producer : producers) {
-            producer = new Producer(buffer);
+            producer = new Producer(blockingQueue);
             producer.start();
         }
     }
