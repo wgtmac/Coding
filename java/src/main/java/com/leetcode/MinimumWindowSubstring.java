@@ -31,7 +31,7 @@ public class MinimumWindowSubstring {
     	if (S == null || T == null || T.length() == 0 || S.length() < T.length())
     	    return "";
     	
-    	// init map, and set the emerging frequency of each char
+    	// init map, and keys the emerging frequency of each char
         Map<Character, Integer> map = initMap(T);
 
         int start = 0, remChars2Match = T.length(), finalStart = 0, finalEnd = S.length();

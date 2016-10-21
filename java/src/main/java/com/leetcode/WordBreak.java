@@ -13,7 +13,7 @@ package com.leetcode;
  * 
  * Skill: 
  * f[i] 0-i can be broken
- * f[i] = (f[j] == true && set contains j-i) 
+ * f[i] = (f[j] == true && keys contains j-i)
  * */
 
 import java.util.Set;

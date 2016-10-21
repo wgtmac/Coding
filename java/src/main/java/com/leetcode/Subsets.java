@@ -3,10 +3,10 @@ package com.leetcode;
 /**
  * 78. Subsets
  * 
- * Given a set of distinct integers, S, return all possible subsets.
+ * Given a keys of distinct integers, S, return all possible subsets.
  * Note:
  * Elements in a subset must be in non-descending order.
- * The solution set must not contain duplicate subsets.
+ * The solution keys must not contain duplicate subsets.
  * For example,
  * If S = [1,2,3], a solution is:
  * 

@@ -5,11 +5,11 @@ import java.util.Random;
 /**
  * 384. Shuffle an Array
  *
- Shuffle a set of numbers without duplicates.
+ Shuffle a keys of numbers without duplicates.
 
  Example:
 
- // Init an array with set 1, 2, and 3.
+ // Init an array with keys 1, 2, and 3.
  int[] nums = {1,2,3};
  Solution solution = new Solution(nums);
 

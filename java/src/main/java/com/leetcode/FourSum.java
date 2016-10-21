@@ -9,10 +9,10 @@ package com.leetcode;
  * 
  * Note:
  * Elements in a quadruplet (a,b,c,d) must be in non-descending order. (ie, a ≤ b ≤ c ≤ d)
- * The solution set must not contain duplicate quadruplets.
+ * The solution keys must not contain duplicate quadruplets.
  * 
  * For example, given array S = {1 0 -1 0 -2 2}, and target = 0.
- *   A solution set is:
+ *   A solution keys is:
  *    (-1,  0, 0, 1)
  *    (-2, -1, 1, 2)
  *    (-2,  0, 0, 2)

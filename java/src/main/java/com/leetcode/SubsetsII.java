@@ -8,7 +8,7 @@ package com.leetcode;
  * 
  * Note:
  * Elements in a subset must be in non-descending order.
- * The solution set must not contain duplicate subsets.
+ * The solution keys must not contain duplicate subsets.
  * For example,
  * If S = [1,2,2], a solution is:
  * [
