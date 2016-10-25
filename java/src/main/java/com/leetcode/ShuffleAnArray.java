@@ -54,5 +54,20 @@ public class ShuffleAnArray {
             }
             return nums;
         }
+
+        /**
+         * Pick up k elements from the array (k < nums.length)
+         */
+        private int[] pickupk(int k) {
+            int[] nums = new int[k];
+            System.arraycopy(oriNums, 0, nums, 0, k);
+            for (int i = k; i < oriNums.length; ++i) {
+                int j = rnd.nextInt(i + 1);
+                if (j < k) {
+                    nums[j] = oriNums[i];
+                }
+            }
+            return nums;
+        }
     }
 }

@@ -9,7 +9,7 @@ package com.leetcode;
  */
 public class ImplementTriePrefixTree {
 
-    class TrieNode {
+    private static class TrieNode {
         boolean hasWord;
         TrieNode[] next;
         public TrieNode() {
@@ -18,7 +18,7 @@ public class ImplementTriePrefixTree {
         }
     }
 
-    class Trie {
+    private static class Trie {
         private TrieNode root;
 
         public Trie() {
