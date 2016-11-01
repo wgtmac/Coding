@@ -29,8 +29,9 @@ import java.util.*;
  * 0  -1   3   4
  */
 public class WallsAndGates {
-    void wallsAndGates(List<List<Integer>> rooms) {
-        int row = rooms.size(), col = rooms.get(0).size();
+    public void wallsAndGates(int[][] rooms) {
+        if (rooms == null || rooms.length == 0) return;
+        int row = rooms.length, col = rooms[0].length;
         // i * col + j
         Set<Integer> processed = new HashSet<>();
         Queue<Integer> queue = new LinkedList<>();
@@ -38,7 +39,7 @@ public class WallsAndGates {
         // find all gates
         for (int i = 0; i < row; ++i) {
             for (int j = 0; j < col; ++j) {
-                switch (rooms.get(i).get(j)) {
+                switch (rooms[i][j]) {
                     case 0:  queue.offer(i * col + j);   // gate
                     case -1: processed.add(i * col + j); // wall
                 }
@@ -53,7 +54,7 @@ public class WallsAndGates {
             int size = queue.size();
             for (int i = 0; i < size; ++i) {
                 int value = queue.poll(), r = value / col, c = value % col;
-                rooms.get(r).set(c, dist);
+                rooms[r][c] = dist;
 
                 // try neighbours
                 for (int j = 0; j < 4; ++j) {
@@ -68,18 +69,5 @@ public class WallsAndGates {
 
             dist++;
         }
-    }
-
-    public static void main(String[] args) {
-        WallsAndGates w = new WallsAndGates();
-        int INF = Integer.MAX_VALUE;
-        List<List<Integer>> rooms = new ArrayList<List<Integer>>() {{
-            add(Arrays.asList(INF, -1, 0, INF));
-            add(Arrays.asList(INF, INF, INF, -1));
-            add(Arrays.asList(INF, -1, INF, -1));
-            add(Arrays.asList(0, -1, INF, INF));
-        }};
-        w.wallsAndGates(rooms);
-        System.out.println(rooms);
     }
 }

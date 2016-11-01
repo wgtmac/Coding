@@ -31,7 +31,7 @@ public class MissingRanges {
         	expected = A[i] + 1;
         }
 
-        if (expected <= upper)
+        if (expected != Integer.MIN_VALUE && expected <= upper)
             ret.add(constructRange(expected, upper));
         
         return ret;

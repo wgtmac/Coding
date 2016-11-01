@@ -53,11 +53,11 @@ public class UnionFind {
 
         if (parentX != parentY) {
             if (ranks[parentX] < ranks[parentY]) {
-                parents[x] = parentY;
+                parents[parentX] = parentY;
             } else if (ranks[parentX] > ranks[parentY]) {
-                parents[y] = parentX;
+                parents[parentY] = parentX;
             } else {
-                parents[x] = parentY;
+                parents[parentX] = parentY;
                 ranks[parentY] += 1;
             }
         }

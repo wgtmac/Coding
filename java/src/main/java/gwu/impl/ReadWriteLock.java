@@ -16,14 +16,14 @@ public class ReadWriteLock {
     private boolean isWriting = false;
 
     private Lock lock = new ReentrantLock();
-    private Condition cond = lock.newCondition();
+    private Condition occupied = lock.newCondition();
 
     public void lockRead() {
         // wait for write lock release
         lock.lock();
         while (isWriting) {
             try {
-                cond.await();
+                occupied.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -37,7 +37,7 @@ public class ReadWriteLock {
         lock.lock();
         while (isWriting || readCount > 0) {
             try {
-                cond.await();
+                occupied.await();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -52,14 +52,14 @@ public class ReadWriteLock {
         if (readCount > 0)
             readCount--;
         if (readCount == 0)
-            cond.signalAll();
+            occupied.signalAll();
         lock.unlock();
     }
 
     public void unlockWrite() {
         lock.lock();
         isWriting = false;
-        cond.signalAll();
+        occupied.signalAll();
         lock.unlock();
     }
 

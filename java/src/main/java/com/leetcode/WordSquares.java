@@ -77,11 +77,11 @@ public class WordSquares {
 
     private static class TrieNode {
         String word = null;
-        TrieNode next[] = new TrieNode[26];
+        Map<Character, TrieNode> next = new HashMap<>();
     }
 
-    public List<List<String>> wordSquares(List<String> words) {
-        if (words.isEmpty()) return Collections.emptyList();
+    List<List<String>> wordSquares(String[] words) {
+        if (words.length == 0) return Collections.emptyList();
 
         // construct trie
         TrieNode root = new TrieNode();
@@ -91,18 +91,20 @@ public class WordSquares {
 
         // try every word as beginning word
         List<List<String>> result = new ArrayList<>();
-        for (int i = 0; i < words.size(); ++i) {
-            List<String> list = new ArrayList<>();
-            list.add(words.get(i));
-            helper(root, 1, words.get(0).length(), list, result);
+        List<String> list = new ArrayList<>();
+        for (int i = 0; i < words.length; ++i) {
+            list.add(words[i]);
+            helper(root, 1, words[i].length(), list, result);
+            list.remove(list.size() - 1);
         }
 
         return result;
     }
 
     private void helper(TrieNode root, int level, int totalLevel,
-                           List<String> square, List<List<String>> result) {
+                        List<String> square, List<List<String>> result) {
         if (level == totalLevel) {
+            //System.out.println(level + " " + square);
             result.add((List<String>) ((ArrayList<String>)(square)).clone());
             return;
         }
@@ -117,15 +119,14 @@ public class WordSquares {
         for (String next : nextLevel) {
             square.add(next);
             helper(root, level + 1, totalLevel, square, result);
-            square.remove(next);
+            square.remove(square.size() - 1);
         }
     }
 
     private List<String> match(TrieNode root, String prefix) {
         List<String> words = new ArrayList<>();
         for (int i = 0; i < prefix.length(); ++i) {
-            char ch = prefix.charAt(i);
-            root = root.next[ch - 'a'];
+            root = root.next.get(prefix.charAt(i));
             if (root == null) break;
         }
 
@@ -140,10 +141,8 @@ public class WordSquares {
                     if (node.word != null) {
                         words.add(node.word);
                     } else {
-                        for (int j = 0; j < 26; ++j) {
-                            if (node.next[j] != null) {
-                                queue.offer(node.next[j]);
-                            }
+                        for (TrieNode next : node.next.values()) {
+                            queue.offer(next);
                         }
                     }
                 }
@@ -156,20 +155,16 @@ public class WordSquares {
     private void add(TrieNode root, String word) {
         for (int i = 0; i < word.length(); ++i) {
             char ch = word.charAt(i);
-            if (root.next[ch - 'a'] == null)
-                root.next[ch - 'a'] = new TrieNode();
-            root = root.next[ch - 'a'];
+            if (!root.next.containsKey(ch))
+                root.next.put(ch, new TrieNode());
+            root = root.next.get(ch);
         }
         root.word = word;
     }
 
     public static void main(String[] args) {
         WordSquares w = new WordSquares();
-
-        List<String> words = Arrays.asList("area","lead","wall","lady","ball");
-        System.out.println(w.wordSquares(words));
-
-        words = Arrays.asList("abat","baba","atan","atal");
+        String[] words = {"abaa","aaab","baaa","aaba"};
         System.out.println(w.wordSquares(words));
     }
 }

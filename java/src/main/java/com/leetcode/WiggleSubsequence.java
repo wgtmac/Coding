@@ -85,6 +85,10 @@ public class WiggleSubsequence {
 
     /**
      * DP solution
+     *
+     * Idea is if curr one is larger than prev one, it can replace prev for increasing
+     * likewise, if curr one is smaller than prev one, it can replace prev for decreasing
+     * Merging these two cases can result in the DP as follows.
      */
     public int wiggleMaxLength_DP(int[] nums) {
         if(nums.length <= 1) return nums.length;

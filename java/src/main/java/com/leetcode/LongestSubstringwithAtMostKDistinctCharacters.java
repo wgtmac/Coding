@@ -14,16 +14,23 @@ import java.util.Map;
  */
 public class LongestSubstringwithAtMostKDistinctCharacters {
     static int lengthOfLongestSubstringKDistinct(String s, int k) {
-        if (s == null || s.length() == 0) return 0;
+        if (s == null || s.length() == 0 || k == 0) return 0;
         Map<Character, Integer> map = new HashMap<>();  // record the last index of current two chars
 
         int start = 0, max = 0;
         for (int i = 0; i < s.length(); i++) {
             if (map.size() < k || map.containsKey(s.charAt(i))) {   // continue increasing
                 map.put(s.charAt(i), i);
-            } else {        // a 3rd char appears
+            } else {        // k+1 th char appears
                 max = Math.max(max, i - start);
-                start = map.remove(s.charAt(start)) + 1;
+
+                while (map.size() == k) {
+                    if (map.get(s.charAt(start)) == start) {
+                        map.remove(s.charAt(start));
+                    }
+                    start++;
+                }
+
                 map.put(s.charAt(i), i);
             }
         }
@@ -35,6 +42,6 @@ public class LongestSubstringwithAtMostKDistinctCharacters {
         System.out.println(lengthOfLongestSubstringKDistinct("eceba", 2));		// 3
         System.out.println(lengthOfLongestSubstringKDistinct("aaaabbbbccccc", 2));	// 9
         System.out.println(lengthOfLongestSubstringKDistinct("cdaba", 2));	// 3
-        System.out.println(lengthOfLongestSubstringKDistinct("abaccc", 2));	// 3
+        System.out.println(lengthOfLongestSubstringKDistinct("abaccc", 2));	// 4
     }
 }

@@ -6,7 +6,7 @@ import java.util.*;
  * Created by wgtmac on 10/23/16.
  *
  * Implementation of suffix tree for string search
- * Efficient to search many small strings inside current string
+ * Efficient to search all matched substrings from a string
  */
 public class SuffixTree {
 

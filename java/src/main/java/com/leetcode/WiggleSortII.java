@@ -20,45 +20,61 @@ import java.util.Queue;
  * Can you do it in O(n) time and/or in-place with O(1) extra space?
  */
 public class WiggleSortII {
-    public void wiggleSort(int[] nums) {
-        Arrays.sort(nums);
 
-        // 5:1  4:0
-        int offset = nums.length % 2;
-        // 5: (1,2)  4:(0,1)
-        int[] lowest = Arrays.copyOfRange(nums, offset, nums.length / 2 + offset);
-        // 5:(3,4)   4:(2,3)
-        int[] highest = Arrays.copyOfRange(nums, nums.length / 2 + offset, nums.length);
-
-        reorder(nums, offset == 0 ? lowest : highest, offset == 1 ? lowest : highest, offset);
-        checkAndShift(nums);
+    private void swap(int[] nums, int i, int j) {
+        int temp = nums[i];
+        nums[i] = nums[j];
+        nums[j] = temp;
     }
 
-    private void reorder(int[] nums, int[] first, int[] second, int offset) {
-        int i = offset, j = 0;
-        while (j < first.length) {
-            nums[i++] = first[j];
-            nums[i++] = second[j++];
+    private int quickFindK(int[] nums, int k, int start, int end) {
+        if (start == end) return nums[start];
+
+        int l = start, r = end + 1;
+        int num = nums[start];
+        while (true) {
+            while (nums[++l] < num) if (l == end) break;
+            while (nums[--r] > num) if (r == start) break;
+            if (l >= r) break;
+            swap(nums, l, r);
+        }
+
+        swap(nums, start, r);
+
+        if (k == r) {
+            return nums[k];
+        } else if (k > r) {
+            return quickFindK(nums, k, r + 1, end);
+        } else {
+            return quickFindK(nums, k, start, r - 1);
         }
     }
 
-    private void checkAndShift(int[] nums) {
-        if (nums.length > 3 && nums.length % 2 == 0) {
-            for (int i = 1; i < nums.length && i + 1 < nums.length; i += 2) {
-                if (nums[i] == nums[i + 1]) {
-                    Queue<Integer> queue = new LinkedList<>();
+    public void wiggleSort(int[] nums) {
+        int median = quickFindK(nums, (nums.length + 1) / 2 - 1, 0, nums.length - 1);
+        int oddIndex = 1;
+        // put small number reversely, avoid duplicate median numbers to be together
+        int evenIndex = nums.length % 2 == 0 ? nums.length - 2 : nums.length - 1;
+        int[] tmpArr = new int[nums.length];
 
-                    int j = 0, k = 0;
-                    for (; j <= i; ++j)
-                        queue.offer(nums[j]);
-                    for (; j < nums.length; ++j, ++k)
-                        nums[k] = nums[j];
-                    for (; k < nums.length; ++k)
-                        nums[k] = queue.poll();
-                    break;
-                }
+        for(int i = 0; i < nums.length; i++){
+            if(nums[i] > median){
+                tmpArr[oddIndex] = nums[i];
+                oddIndex += 2;
+            } else if(nums[i] < median){
+                tmpArr[evenIndex] = nums[i];
+                evenIndex -= 2;
             }
         }
+
+        for (; oddIndex < nums.length; oddIndex += 2){
+            tmpArr[oddIndex] = median;
+        }
+        for (; evenIndex >= 0; evenIndex -= 2){
+            tmpArr[evenIndex]=median;
+        }
+
+        System.arraycopy(tmpArr, 0, nums, 0, nums.length);
     }
 
     public static void main(String[] args) {
