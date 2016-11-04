@@ -1,9 +1,6 @@
 package com.leetcode;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 /**
  * 254. Factor Combinations
@@ -47,39 +44,48 @@ import java.util.Map;
  *   ]
  */
 public class FactorCombinations {
+    public static void main(String[] args) {
+        FactorCombinations f = new FactorCombinations();
+        System.out.println(f.getFactors(32));
+        System.out.println(f.getFactors(12));
+        System.out.println(f.getFactors(16));
+        System.out.println(f.getFactors(37));
+    }
+
     public List<List<Integer>> getFactors(int n) {
         Map<Integer, List<List<Integer>>> cache = new HashMap<>();
-        cache.put(1, new ArrayList<>());
-        cache.put(n, new ArrayList<>());
-
-        helper(1, n, new ArrayList<>(), cache);
+        helper(2, n, cache, n);
         return cache.get(n);
     }
 
     /**
      * @param lastFactor: last factor has been processed (in non-descending order)
-     * @param num: remaining number to find factors
-     * @param list: accumulated factors
+     * @param remNum: remaining number to find factors
      * @param cache: store all processed result
      */
-    private void helper(int lastFactor, int num, List<Integer> list, Map<Integer, List<List<Integer>>> cache) {
-        if (!cache.containsKey(num)) {
-            cache.put(num, new ArrayList<>());
+    private void helper(int lastFactor, int remNum, Map<Integer, List<List<Integer>>> cache, int n) {
+        if (!cache.containsKey(remNum)) {
+            cache.put(remNum, new ArrayList<>());
 
-            for (int factor = lastFactor; factor < num; ++factor) {
-                if (num % factor == 0) {
-                    list.add(factor);
-                    helper(factor, num / factor, list, cache);
-                    list.remove(list.size() - 1);
+            for (int factor = lastFactor; factor * factor <= remNum; ++factor) {
+                if (remNum % factor == 0) {
+                    helper(factor, remNum / factor, cache, n);
 
-                    for (List<Integer> lists : cache.get(num / factor)) {
-                        List<Integer>  = new ArrayList<>();
+                    for (List<Integer> tailList : cache.get(remNum / factor)) {
+                        if (!tailList.isEmpty() && tailList.get(0) < factor)
+                            continue;
+
+                        List<Integer> currList = new ArrayList<>();
+                        currList.add(factor);
+                        currList.addAll(tailList);
+                        cache.get(remNum).add(currList);
                     }
-                    subList.add(factor);
-                    subList.addAll();
-                    cache.get(num).add();
                 }
             }
+
+            // process itself
+            if (remNum != n)
+                cache.get(remNum).add(new ArrayList<Integer>() {{ add(remNum);}});
         }
     }
 }
