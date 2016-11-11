@@ -106,26 +106,30 @@ public class DesignSnakeGame {
 
             head = new int[] {head[0] + deltaH, head[1] + deltaW};
 
+            int headValue = head[0] * width + head[1];
+            int tail = snake.iterator().next();
+
             // head is out of bound, DEAD
             if (!isValidPos(head[0], head[1])) {
                 return -1;
             }
 
             // eats own body, DEAD
-            if (snake.contains(head[0] * width + head[1])) {
+            if (snake.contains(headValue) && headValue != tail) {
                 return -1;
             }
 
-            // hit the food
+            // meet the food
             if (posFood < food.length && food[posFood][0] == head[0] &&
                     food[posFood][1] == head[1]) {
                 score++;
+                posFood++;   // next food appear
             } else {
                 // tail is moved away
-                snake.remove(snake.iterator().next());
+                snake.remove(tail);
             }
 
-            snake.add(head[0] * width + head[1]);
+            snake.add(headValue);
 
             return score;
         }
