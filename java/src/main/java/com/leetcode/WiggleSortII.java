@@ -71,7 +71,7 @@ public class WiggleSortII {
             tmpArr[oddIndex] = median;
         }
         for (; evenIndex >= 0; evenIndex -= 2){
-            tmpArr[evenIndex]=median;
+            tmpArr[evenIndex] = median;
         }
 
         System.arraycopy(tmpArr, 0, nums, 0, nums.length);

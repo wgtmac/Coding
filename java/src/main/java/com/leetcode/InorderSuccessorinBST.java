@@ -10,28 +10,21 @@ package com.leetcode;
  */
 public class InorderSuccessorinBST {
     public TreeNode inorderSuccessor(TreeNode root, TreeNode p) {
-        if (p.right != null) {
-            // find left-most leaf node in the right sub-tree
-            p = p.right;
-            while (p.left != null) p = p.left;
-            return p;
-        } else {
-            // find parent of p and parent.left == p
-            TreeNode parent = null;
-            while (root != null) {
-                if (root == p) break;
-                parent = root;
-                if (root.val < p.val)
-                    root = root.right;
-                else
-                    root = root.left;
-            }
 
-            if (parent != null && parent.left == p)
-                return parent;
-            else
-                return null;
+        TreeNode successor = null;
+
+        while (root != null) {
+            if (root.val < p.val) {
+                root = root.right;
+            } else if (root.val > p.val) {
+                successor = root;   // has the potential to be successor
+                root = root.left;
+            } else {   // root.val == p.val
+                root = root.right;
+            }
         }
+
+        return successor;
     }
 
     private static class TreeNode {

@@ -37,6 +37,7 @@ public class CountOfSmallerNumbersAfterSelf {
         return list;
     }
 
+    // maintain a BST with node count info
     private TreeNode updateTree(TreeNode root, int num) {
         if (root == null) return new TreeNode(num);
 
@@ -73,7 +74,7 @@ public class CountOfSmallerNumbersAfterSelf {
     }
 
     private static class TreeNode {
-        int value, count, totalCount;
+        int value, count, totalCount;   // count of curr value and all values in subtree
         TreeNode left = null, right = null;
         TreeNode(int num) {
             value = num;
