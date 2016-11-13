@@ -18,7 +18,7 @@ import java.util.*;
  */
 
 /**
- * @link: https://discuss.leetcode.com/topic/34875/easy-short-concise-and-fast-java-dfs-3-ms-solution
+ * @link: https://discuss.leetcode.com/topic/34875/easy-short-concise-and-fast-java-helper-3-ms-solution
  *
  * Explanation:
  * We all know how to check a string of parentheses is valid using a stack.

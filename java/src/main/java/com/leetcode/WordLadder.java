@@ -115,4 +115,51 @@ public class WordLadder {
         wordList.removeAll(queryQ);
         return false;
     }
+
+    /**
+     * Also return the path
+     */
+    public List<String> ladderLengthWithPath(String beginWord, String endWord, Set<String> wordList) {
+        if (beginWord == null || endWord == null || wordList == null)
+            return Collections.emptyList();
+
+        Queue<String> queue = new LinkedList<String>() {{ offer(beginWord); }};
+        Map<String, String> pathTo = new HashMap<>();
+
+        while (!queue.isEmpty()) {
+            int size = queue.size();
+            while (size-- > 0) {
+                String currStr = queue.poll();
+                for (char ch = 'a'; ch <= 'z'; ch++) {
+                    for (int i = 0; i < currStr.length(); ++i) {
+                        if (ch == currStr.charAt(i)) continue;
+
+                        String nextStr = currStr.substring(0, i) + ch + currStr.substring(i + 1);
+
+                        if (nextStr.equals(endWord)) {
+                            List<String> ans = new ArrayList<>();
+                            ans.add(endWord);
+
+                            while (!currStr.equals(beginWord)) {
+                                ans.add(currStr);
+                                currStr = pathTo.get(currStr);
+                            }
+
+                            ans.add(beginWord);
+                            Collections.reverse(ans);
+                            return ans;
+                        }
+
+                        if (wordList.contains(nextStr)) {
+                            queue.offer(nextStr);
+                            wordList.remove(nextStr);
+                            pathTo.put(nextStr, currStr);
+                        }
+                    }
+                }
+            }
+        }
+
+        return Collections.emptyList();
+    }
 }

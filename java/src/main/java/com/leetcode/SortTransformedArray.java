@@ -25,43 +25,29 @@ import java.util.List;
  * Result: [-23, -5, 1, 7]
  */
 public class SortTransformedArray {
-    List<Integer> sortTransformedArray(List<Integer> nums, int a, int b, int c) {
-        for (int i = 0; i < nums.size(); ++i) {
-            int num = nums.get(i);
-            nums.set(i, a * num * num + b * num + c);
+    int[] sortTransformedArray(int[] nums, int a, int b, int c) {
+        for (int i = 0; i < nums.length; ++i) {
+            int num = nums[i];
+            nums[i] = a * num * num + b * num + c;
         }
 
-        List<Integer> list = new ArrayList<>(nums.size());
-        for (int i = 0; i < nums.size(); ++i)
-            list.add(0);
-        int start = 0, end = nums.size() - 1;
-        int idx = a >= 0 ? nums.size() - 1 : 0;
+        int[] list = new int[nums.length];
+        int start = 0, end = nums.length - 1;
+        int idx = a >= 0 ? nums.length - 1 : 0;
         while (start <= end) {
             if (a >= 0) {
-                if (nums.get(start) >= nums.get(end))
-                    list.set(idx--, nums.get(start++));
+                if (nums[start] >= nums[end])
+                    list[idx--] = nums[start++];
                 else
-                    list.set(idx--, nums.get(end--));
+                    list[idx--] = nums[end--];
             } else {
-                if (nums.get(start) < nums.get(end))
-                    list.set(idx++, nums.get(start++));
+                if (nums[start] < nums[end])
+                    list[idx++] = nums[start++];
                 else
-                    list.set(idx++, nums.get(end--));
+                    list[idx++] = nums[end--];
             }
         }
 
         return list;
-    }
-
-    public static void main(String[] args) {
-        SortTransformedArray s = new SortTransformedArray();
-        List<Integer> nums = Arrays.asList(-4, -2, 2, 4);
-        System.out.println(s.sortTransformedArray(nums, 1, 3, 5));
-
-        nums = Arrays.asList(-4, -2, 2, 4);
-        System.out.println(s.sortTransformedArray(nums, -1, 3, 5));
-
-        nums = Arrays.asList(-4, -2, 2, 4);
-        System.out.println(s.sortTransformedArray(nums, 0, 3, 5));
     }
 }
