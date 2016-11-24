@@ -3,7 +3,7 @@ package com.leetcode;
 /**
  * 27. Remove Element
  *
- * Given an array and a value, remove all instances of that value in place
+ * Given an array and a val, remove all instances of that val in place
  * and return the new length.
  * 
  * The order of elements can be changed.

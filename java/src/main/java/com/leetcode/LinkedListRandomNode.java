@@ -5,7 +5,7 @@ import java.util.Random;
 /**
  * 382. Linked List Random TrieNode
  *
- * Given a singly linked currList, return a random node's value from the linked currList.
+ * Given a singly linked currList, return a random node's val from the linked currList.
  * Each node must have the same probability of being chosen.
  *
  * Follow up:
@@ -56,7 +56,7 @@ public class LinkedListRandomNode {
             rnd = new Random(System.currentTimeMillis());
         }
 
-        /** Returns a random node's value. */
+        /** Returns a random node's val. */
         public int getRandom() {
             return nums[rnd.nextInt(nums.length)];
         }
@@ -75,7 +75,7 @@ public class LinkedListRandomNode {
             rnd = new Random(System.currentTimeMillis());
         }
 
-        /** Returns a random node's value. */
+        /** Returns a random node's val. */
         public int getRandom() {
             int len = 0, value = 0;
 

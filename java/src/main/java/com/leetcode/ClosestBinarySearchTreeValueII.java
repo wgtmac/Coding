@@ -7,11 +7,11 @@ import java.util.List;
 /**
  * 272. Closest Binary Search Tree Value II
  *
- * Given a non-empty binary search tree and a target value, find k values in the
+ * Given a non-empty binary search tree and a target val, find k values in the
  * BST that are closest to the target.
  *
  * Note:
- *   1. Given target value is a floating point.
+ *   1. Given target val is a floating point.
  *   2. You may assume k is always valid, that is: k ≤ total nodes.
  *   3. You are guaranteed to have only one unique set of k values in the BST that
  *      are closest to the target.

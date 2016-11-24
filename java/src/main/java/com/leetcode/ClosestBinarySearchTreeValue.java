@@ -3,12 +3,12 @@ package com.leetcode;
 /**
  * 270. Closest Binary Search Tree Value
  *
- * Given a non-empty binary search tree and a target value, find the value in the
+ * Given a non-empty binary search tree and a target val, find the val in the
  * BST that is closest to the target.
  *
  * Note:
- * Given target value is a floating point.
- * You are guaranteed to have only one unique value in the BST that is closest
+ * Given target val is a floating point.
+ * You are guaranteed to have only one unique val in the BST that is closest
  * to the target.
  */
 public class ClosestBinarySearchTreeValue {

@@ -74,7 +74,7 @@ public class CountOfSmallerNumbersAfterSelf {
     }
 
     private static class TreeNode {
-        int value, count, totalCount;   // count of curr value and all values in subtree
+        int value, count, totalCount;   // count of curr val and all values in subtree
         TreeNode left = null, right = null;
         TreeNode(int num) {
             value = num;

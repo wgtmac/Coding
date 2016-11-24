@@ -9,7 +9,7 @@ import java.util.*;
  *
  * -1  - A wall or an obstacle.
  * 0   - A gate.
- * INF - Infinity means an empty room. We use the value 2^31 - 1 = 2147483647 to
+ * INF - Infinity means an empty room. We use the val 2^31 - 1 = 2147483647 to
  *       represent INF as you may assume that the distance to a gate is less
  *       than 2147483647.
  *

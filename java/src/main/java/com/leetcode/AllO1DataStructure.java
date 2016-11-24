@@ -10,10 +10,10 @@ import java.util.Set;
  *
  * Implement a data structure supporting the following operations:
  *
- * Inc(Key) - Inserts a new key with value 1. Or increments an existing key by 1. Key is guaranteed to be a non-empty string.
- * Dec(Key) - Decrements an existing key by 1. If Key's value is 1, remove it from the data structure. Key is guaranteed to be a non-empty string. If the key does not exist, this function does nothing.
- * GetMaxKey() - Returns one of the keys with maximal value. If no element exists, return an empty string "".
- * GetMinKey() - Returns one of the keys with minimal value. If no element exists, return an empty string "".
+ * Inc(Key) - Inserts a new key with val 1. Or increments an existing key by 1. Key is guaranteed to be a non-empty string.
+ * Dec(Key) - Decrements an existing key by 1. If Key's val is 1, remove it from the data structure. Key is guaranteed to be a non-empty string. If the key does not exist, this function does nothing.
+ * GetMaxKey() - Returns one of the keys with maximal val. If no element exists, return an empty string "".
+ * GetMinKey() - Returns one of the keys with minimal val. If no element exists, return an empty string "".
  * Challenge: Perform all these in O(1) time complexity.
  */
 public class AllO1DataStructure {
@@ -39,12 +39,12 @@ public class AllO1DataStructure {
             tail.prev = head;
         }
 
-        /** Inserts a new key <Key> with value 1. Or increments an existing key by 1. */
+        /** Inserts a new key <Key> with val 1. Or increments an existing key by 1. */
         public void inc(String key) {
             int value = 1;
             Node prev = head;
 
-            // remove old value
+            // remove old val
             if (k2n.containsKey(key)) {
                 Node node = k2n.get(key);
                 value = node.val + 1;
@@ -59,7 +59,7 @@ public class AllO1DataStructure {
                 }
             }
 
-            // add new value
+            // add new val
             if (prev.next.val == value) {
                 k2n.put(key, prev.next);
             } else {
@@ -68,14 +68,14 @@ public class AllO1DataStructure {
             k2n.get(key).keys.add(key);
         }
 
-        /** Decrements an existing key by 1. If Key's value is 1, remove it from the data structure. */
+        /** Decrements an existing key by 1. If Key's val is 1, remove it from the data structure. */
         public void dec(String key) {
             Node node = k2n.get(key);
             if (node != null) {
                 int value = node.val - 1;
                 Node next = node;
 
-                // remove old value
+                // remove old val
                 node.keys.remove(key);
                 if (node.keys.isEmpty()) {
                     node.prev.next = node.next;
@@ -84,7 +84,7 @@ public class AllO1DataStructure {
                 }
                 k2n.remove(key);
 
-                // add new value
+                // add new val
                 if (value != 0) {
                     if (next.prev.val == value) {
                         k2n.put(key, next.prev);
@@ -98,13 +98,13 @@ public class AllO1DataStructure {
             }
         }
 
-        /** Returns one of the keys with maximal value. */
+        /** Returns one of the keys with maximal val. */
         public String getMaxKey() {
             if (k2n.isEmpty()) return "";
             return tail.prev.keys.iterator().next();
         }
 
-        /** Returns one of the keys with Minimal value. */
+        /** Returns one of the keys with Minimal val. */
         public String getMinKey() {
             if (k2n.isEmpty()) return "";
             return head.next.keys.iterator().next();
